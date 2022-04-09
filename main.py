@@ -1,3 +1,4 @@
+from flask import Flask, render_template, request, send_file, redirect
 import scripts as src
 import os
 
@@ -16,8 +17,9 @@ rdmn = {
 
 for i in rdmn.keys():
     os.mkdir(f"./ex/{i}")
-    for s in range(20):
+    for s in range(1250):
         rdmn[i].append(src.ex.plot(i, src.random.get_num()))
     for e, s in enumerate(rdmn[i]):
         plotter.plot(output=f"./ex/{i}/{e}.png", font=s["font"], plot=s["plot"])
 
+app = Flask(" ")
