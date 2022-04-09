@@ -2,13 +2,22 @@ import psycopg2 as pg
 import dotenv
 import os
 
-def connect():
-
-    db = os.environ.get("POSTGRE_DB")
-    user = os.environ.get("POSTGRE_USER")
-    password = os.environ.get("POSTGRE_PASS")
-    host = os.environ.get("POSTGRE_HOST")
-    port = os.environ.get("POSTGRE_PORT")
-
-    conn = pg.connect(database=db, user=user, password=password, host=host, port=port)
-    cursor = conn.cursor()
+class Connector():
+    def __init__(self):
+        self.db = os.environ["DATABASE_URL"]
+        self.conn = pg.connect(database=self.db)
+        self.cursor = self.conn.cursor()
+    def drop_and_create(self):
+        self.tables = ["type1", "type2", "type3", "type4", "type5", "type6", "type7", "type8"] 
+        queries = []
+        for i in self.tables:
+            queries.append("DROP TABLE IF EXISTS {i}")
+        for i in self.tables:
+            queries.append(f"CREATE TABLE {i}(plot text, type int")
+        for i in queries:
+            self.cursor.execute(i)
+            self.cursor.commit()
+    def insert(self, type, queries):
+        for i in queries:
+            self.cursor.execute("INSERT INTO ? (plot, type) VALUES(%s, %s)", queries)
+            self.cursor.commit()
